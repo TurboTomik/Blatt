@@ -11,5 +11,10 @@ dependencies = [
     "psycopg>=3.2.9",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "ipython>=9.3.0",
+]
+
 [tool.ruff.lint]
 ignore = ["F401"]
