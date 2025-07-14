@@ -12,9 +12,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "ipython>=9.3.0",
-]
+dev = ["ipython>=9.3.0"]
 
 [tool.ruff.lint]
 ignore = ["F401"]
+
+[dependency-groups]
+dev = ["pytest-django>=4.11.1"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+python_files = ["*test*.py"]
