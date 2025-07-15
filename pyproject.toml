@@ -64,5 +64,6 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "core.settings"
+DJANGO_SETTINGS_MODULE = "core.settings_test"
 python_files = ["*test*.py"]
+addopts = "--ds=core.settings_test"
