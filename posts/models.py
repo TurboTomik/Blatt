@@ -1,4 +1,5 @@
 from django.db import models
+
 from communities.models import Community
 from users.models import User
 
@@ -25,9 +26,6 @@ class Post(models.Model):
         related_query_name="post",
         db_index=True,
     )
-    
-    def __str__(self):
-        return f"Post: {self.title}"
 
     class Meta:
         db_table = "post"
@@ -36,3 +34,6 @@ class Post(models.Model):
             models.Index(fields=["user", "-created_at"]),
             models.Index(fields=["-up_votes", "-created_at"]),
         ]
+
+    def __str__(self):
+        return f"Post: {self.title}"

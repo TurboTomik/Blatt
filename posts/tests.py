@@ -98,8 +98,8 @@ class TestPostModel:
 
         assert post.title, "Full Test Post"
         assert post.body, "The post body"
-        assert post.up_votes, 5
-        assert post.down_votes, 3
+        assert post.up_votes == 5
+        assert post.down_votes == 3
 
     @pytest.mark.django_db
     def test_post_creation_without_title_fails(self, user, community):
@@ -208,7 +208,7 @@ class TestPostModel:
         post.refresh_from_db()
 
         assert post.created_at == created_time
-        assert not post.updated_at == updated_time
+        assert post.updated_at != updated_time
 
     @pytest.mark.django_db
     def test_multiple_posts_same_user_community(self, user, community, post, post2):

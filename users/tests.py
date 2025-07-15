@@ -1,5 +1,5 @@
-import os
 import tempfile
+from pathlib import Path
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -180,12 +180,12 @@ class TestProfileModel:
         """Test avatar ImageField"""
         # Create a simple test image
         image = Image.new("RGB", (100, 100), color="red")
-        temp_file = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-        image.save(temp_file.name)
-        temp_file.close()
+        with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
+            image.save(temp_file.name)
+            temp_file_path = temp_file.name
 
         try:
-            with open(temp_file.name, "rb") as f:
+            with Path.open(temp_file_path, "rb") as f:
                 uploaded_file = SimpleUploadedFile(
                     name="test_avatar.jpg", content=f.read(), content_type="image/jpeg"
                 )
@@ -197,8 +197,8 @@ class TestProfileModel:
                 assert profile.avatar.name.startswith("avatars/")
         finally:
             # Clean up temp file
-            os.unlink(temp_file.name)
-            os.unlink(f"media/{profile.avatar.name}")
+            Path.unlink(temp_file_path)
+            Path.unlink(f"media/{profile.avatar.name}")
 
     @pytest.mark.django_db
     def test_profile_db_table(self):
@@ -267,11 +267,10 @@ class TestPostgreSQLSpecific:
         )
 
         # This shouldn't work as emails are case-insensitive
-        with pytest.raises(IntegrityError):
-            with transaction.atomic():
-                User.objects.create_user(
-                    username="user2", email="test@example.com", password="testpass123"
-                )
+        with pytest.raises(IntegrityError), transaction.atomic():
+            User.objects.create_user(
+                username="user2", email="test@example.com", password="testpass123"
+            )
 
         assert User.objects.filter(email__iexact="test@example.com").count() == 1
 

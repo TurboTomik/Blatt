@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         self,
         email: str,
         username: str,
-        password: Optional[str] = None,
+        password: str | None = None,
         **extra_fields: Any,
     ) -> "User":
         if not email:
@@ -29,7 +29,7 @@ class UserManager(BaseUserManager):
         self,
         email: str,
         username: str,
-        password: Optional[str] = None,
+        password: str | None = None,
         **extra_fields: Any,
     ) -> "User":
         extra_fields.setdefault("is_staff", True)
@@ -96,22 +96,22 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.user.username}'s profile"
-
     class Meta:
         db_table = "user_profile"
         verbose_name = "User Profile"
         verbose_name_plural = "User Profiles"
 
+    def __str__(self):
+        return f"{self.user.username}'s profile"
+
 
 # Signals to auto-create profiles
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(_, instance, created, **_kwargs):
     if created:
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
+def save_user_profile(_, instance, **_kwargs):
     instance.profile.save()
