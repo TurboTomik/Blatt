@@ -14,8 +14,51 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["ipython>=9.3.0"]
 
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+output-format = "github"
+fix = true
+show-fixes = true
+
+exclude = ["migrations", "*/migrations/*"]
+
 [tool.ruff.lint]
-ignore = ["F401"]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "DJ",
+    "S",
+    "T20",
+    "A",
+    "SIM",
+    "RET",
+    "ARG",
+    "PTH",
+    "RUF",
+]
+ignore = ["E501", "DJ001", "B008", "RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/views.py" = ["F401"]
+"*/urls.py" = ["F401"]
+"*/admin.py" = ["F401"]
+"*/models.py" = ["F401"]
+"*/forms.py" = ["F401"]
+"*/tests.py" = ["F401"]
+"manage.py" = ["T20"]
+"*test*" = ["S101", "S106", "ARG001", "ARG002"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
 
 [dependency-groups]
 dev = ["pytest-django>=4.11.1"]
