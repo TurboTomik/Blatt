@@ -18,16 +18,5 @@ PASSWORD_HASHERS = [
 ]
 
 
-# Disable migrations for faster tests
-class DisableMigrations:
-    def __contains__(self, item):
-        return True
-
-    def __getitem__(self, item):
-        return None
-
-
-MIGRATION_MODULES = DisableMigrations()
-
 SECRET_KEY = "test-secret-key"  # noqa: S105
 DEBUG = True
