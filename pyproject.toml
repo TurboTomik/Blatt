@@ -103,3 +103,15 @@ docstring-code-format = true
 DJANGO_SETTINGS_MODULE = "core.settings_test"
 python_files = ["*test*.py"]
 addopts = "--ds=core.settings_test"
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/migrations/*",
+    "*/.venv/*",
+    "*/tests/*",
+    "*/test*.py",
+    "manage.py",
+    "core/*",
+    "*/__init__.py",
+]
