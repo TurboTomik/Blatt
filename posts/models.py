@@ -5,6 +5,8 @@ from users.models import User
 
 
 class Post(models.Model):
+    """Represent a post in a community."""
+
     title = models.CharField(max_length=120, blank=False, null=False, db_index=True)
     body = models.TextField(blank=True, null=False, default="")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -35,5 +37,5 @@ class Post(models.Model):
             models.Index(fields=["-up_votes", "-created_at"]),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Post: {self.title}"

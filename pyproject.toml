@@ -45,23 +45,53 @@ select = [
     "ARG",
     "PTH",
     "RUF",
+    "ANN",
+    "COM818",
+    "D",
+    "ERA",
 ]
-ignore = ["E501", "DJ001", "B008", "RUF012"]
+ignore = [
+    "E111",
+    "E114",
+    "E117",
+    "E501",
+    "DJ001",
+    "B008",
+    "RUF012",
+    "ANN401",
+    "W191",
+    "D100",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D203",
+    "D206",
+    "D211",
+    "D212",
+    "D300",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D413",
+]
 
 [tool.ruff.lint.per-file-ignores]
+"*/apps.py" = ["D"]
 "*/views.py" = ["F401"]
 "*/urls.py" = ["F401"]
-"*/admin.py" = ["F401"]
+"*/admin.py" = ["F401", "D"]
 "*/models.py" = ["F401"]
 "*/forms.py" = ["F401"]
-"*/tests.py" = ["F401"]
-"manage.py" = ["T20"]
-"*test*" = ["S101", "S106", "ARG001", "ARG002"]
+"*/tests.py" = ["F401", "S101", "S106", "ARG001", "ARG002", "ANN"]
+"manage.py" = ["T20", "ANN"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
+docstring-code-format = true
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "core.settings_test"
