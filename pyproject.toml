@@ -91,6 +91,7 @@ ignore = [
 "*/forms.py" = ["F401"]
 "*/tests.py" = ["F401", "S101", "S106", "ARG001", "ARG002", "ANN"]
 "manage.py" = ["T20", "ANN"]
+"tasks.py" = ["ANN", "D", "T20", "A001"]
 
 [tool.ruff.format]
 quote-style = "double"
