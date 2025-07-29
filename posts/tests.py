@@ -34,7 +34,7 @@ def community(user):
     return Community.objects.create(
         name="test_community",
         description="Test community",
-        user=user,
+        creator=user,
     )
 
 
@@ -42,9 +42,9 @@ def community(user):
 def community2(user):
     """Fixture to return an additional community instance."""
     return Community.objects.create(
-        name="community2",
+        name="second_community",
         description="Second community",
-        user=user,
+        creator=user,
     )
 
 
@@ -86,7 +86,6 @@ class TestPostModel:
     @pytest.mark.django_db
     def test_post_creation_with_all_fields(self, user, community):
         """Test creating a post with all fields."""
-
         post = Post.objects.create(
             title="Full Test Post",
             body="The post body",
@@ -104,7 +103,6 @@ class TestPostModel:
     @pytest.mark.django_db
     def test_post_creation_without_title_fails(self, user, community):
         """Test creating a post without title fails."""
-
         with pytest.raises(ValidationError):
             post = Post(
                 user=user,
@@ -115,7 +113,6 @@ class TestPostModel:
     @pytest.mark.django_db
     def test_post_creating_without_community_fails(self, user):
         """Test creating a post without community fails."""
-
         with pytest.raises(IntegrityError):
             Post.objects.create(
                 title="Test Post",
@@ -125,7 +122,6 @@ class TestPostModel:
     @pytest.mark.django_db
     def test_post_creating_without_user_succeeds(self, community):
         """Test creating a post without user succeeds (user can be null)."""
-
         post = Post.objects.create(
             title="Anonymous Post",
             community=community,
@@ -244,7 +240,7 @@ class TestPostModel:
 
     @pytest.mark.django_db
     def test_filtering_by_community(self, user, community, community2):
-        """Test filtering posts by community"""
+        """Test filtering posts by community."""
         post1 = Post.objects.create(
             title="Community 1 post",
             user=user,
@@ -265,7 +261,7 @@ class TestPostModel:
 
     @pytest.mark.django_db
     def test_filtering_by_user(self, user, user2, community):
-        """Test filtering posts by user"""
+        """Test filtering posts by user."""
         post1 = Post.objects.create(
             title="User 1 Post",
             user=user,
