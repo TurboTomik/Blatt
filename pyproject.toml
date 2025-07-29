@@ -15,7 +15,12 @@ dependencies = [
 dev = ["ipython>=9.3.0"]
 
 [dependency-groups]
-dev = ["pytest-cov>=6.2.1", "pytest-django>=4.11.1", "ruff>=0.12.3"]
+dev = [
+    "invoke>=2.2.0",
+    "pytest-cov>=6.2.1",
+    "pytest-django>=4.11.1",
+    "ruff>=0.12.3",
+]
 
 [tool.ruff]
 line-length = 88
