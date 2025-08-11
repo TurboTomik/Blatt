@@ -14,7 +14,7 @@ def user():
     return User.objects.create(
         email="test@test.com",
         username="user",
-        password="test.pass123",
+        password="Test!pass123",
     )
 
 
@@ -24,7 +24,7 @@ def user2():
     return User.objects.create(
         email="test2@test.com",
         username="user2",
-        password="test.pass123",
+        password="Test!pass123",
     )
 
 

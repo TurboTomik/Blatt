@@ -141,3 +141,9 @@ AUTH_USER_MODEL = "users.User"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_AVATAR_URL = MEDIA_URL
+
+LANGUAGES = [
+    ("en-us", "English (US)"),
+]

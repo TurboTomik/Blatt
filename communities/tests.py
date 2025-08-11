@@ -18,7 +18,7 @@ def user():
     return User.objects.create_user(
         username="testuser",
         email="test@example.com",
-        password="testpass123",
+        password="Testpass!123",
     )
 
 
@@ -28,7 +28,7 @@ def another_user():
     return User.objects.create_user(
         username="anotheruser",
         email="another@example.com",
-        password="testpass123",
+        password="Testpass!123",
     )
 
 
@@ -540,7 +540,7 @@ class TestEdgeCases:
             user = User.objects.create_user(
                 username=f"user{i}",
                 email=f"user{i}@example.com",
-                password="testpass123",
+                password="Testpass!123",
             )
             users.append(user)
 
