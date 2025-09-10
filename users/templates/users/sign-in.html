@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+    <form action="/sign-in/" method="post">
+        <fieldset>
+            <legend>Login into account</legend>
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Login</button>
+        </fieldset>
+    </form>
+    <a href="{% url 'sign-up' %}">Sign up</a>
+    {% if user.is_authenticated %}
+        <p>You're login as <strong>{{ user.username }}({{ user.email }})</strong></p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
+{% endblock %}

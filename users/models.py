@@ -14,6 +14,7 @@ from django.utils import timezone
 
 from .managers import UserManager
 from .utils import user_avatar_path
+from .validators import UserUsernameValidator, validate_user_password
 
 
 class User(AbstractUser):
@@ -30,7 +31,9 @@ class User(AbstractUser):
     email = models.EmailField(
         "email address",
         unique=True,
-        validators=[EmailValidator],
+        validators=[
+            EmailValidator(),
+        ],
         error_messages={
             "invalid": "Enter a valid email address.",
             "unique": "A user with that email already exists.",
@@ -43,16 +46,20 @@ class User(AbstractUser):
         max_length=30,
         unique=True,
         validators=[
-            MinLengthValidator(3),
-            RegexValidator(
-                regex=r"^[a-zA-z0-9_]+$",
-                message="Username can only contain letters, numbers and underscores.",
-            ),
+            UserUsernameValidator(),
         ],
         error_messages={
             "unique": "A user with that username already exists.",
         },
         help_text="Required. 3-30 characters. Letters, numbers and underscores.",
+    )
+
+    password = models.CharField(
+        "password",
+        max_length=128,
+        validators=[validate_user_password],
+        null=True,
+        blank=True,
     )
 
     email_verified = models.BooleanField(

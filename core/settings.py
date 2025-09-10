@@ -65,7 +65,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -76,6 +76,12 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    "users.backends.EmailOrUsernameModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -138,6 +144,12 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "users:sign-in"
+LOGOUT_REDIRECT_URL = "/"
+
+REGISTER_REDIRECT_URL = "/"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
