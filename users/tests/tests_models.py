@@ -8,13 +8,12 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import IntegrityError, transaction
-from django.db.utils import DataError
 from django.utils import timezone
 from PIL import Image
 
-from .models import Profile, UserPreferences
-from .utils import user_avatar_path
-from .validators import validate_user_password
+from users.models import Profile, UserPreferences
+from users.utils import user_avatar_path
+from users.validators import validate_user_password
 
 User = get_user_model()
 
@@ -76,7 +75,7 @@ class TestUserModel:
     @pytest.mark.django_db
     def test_email_field_required(self):
         """Test that email field is required."""
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             User.objects.create_user(
                 username="testuser",
                 email="",  # Empty email should fail
@@ -86,7 +85,7 @@ class TestUserModel:
     @pytest.mark.django_db
     def test_username_field_required(self):
         """Test that username field is required."""
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             User.objects.create_user(
                 username="",  # Empty username should fail
                 email="test@example.com",
@@ -106,7 +105,7 @@ class TestUserModel:
     @pytest.mark.django_db
     def test_username_uniqueness(self, user):
         """Test that username must be unique."""
-        with pytest.raises(IntegrityError):
+        with pytest.raises(ValidationError):
             User.objects.create_user(
                 username="testuser",  # Same username
                 email="test2@example.com",
@@ -118,7 +117,7 @@ class TestUserModel:
         """Test username max length constraint."""
         long_username = "a" * 31  # 31 characters, should exceed max_length=30
 
-        with pytest.raises(DataError):
+        with pytest.raises(ValidationError):
             User.objects.create_user(
                 username=long_username,
                 email="test@example.com",
@@ -281,7 +280,7 @@ class TestUserManager:
     @pytest.mark.django_db
     def test_create_user_no_email(self):
         """Test creating user without email raises ValueError."""
-        with pytest.raises(ValueError, match="The Email field must be set"):
+        with pytest.raises(ValidationError, match="This field cannot be blank."):
             User.objects.create_user(
                 email="",
                 username="testuser",
@@ -291,7 +290,7 @@ class TestUserManager:
     @pytest.mark.django_db
     def test_create_user_no_username(self):
         """Test creating user without username raises ValueError."""
-        with pytest.raises(ValueError, match="The Username field must be set"):
+        with pytest.raises(ValidationError, match="This field cannot be blank."):
             User.objects.create_user(
                 email="test@example.com",
                 username="",
@@ -756,7 +755,12 @@ class TestPostgreSQLSpecific:
         )
 
         # This shouldn't work as emails are case-insensitive
-        with pytest.raises(IntegrityError), transaction.atomic():
+        with (
+            pytest.raises(
+                ValidationError, match="A user with that email already exists."
+            ),
+            transaction.atomic(),
+        ):
             User.objects.create_user(
                 username="user2",
                 email="test@example.com",
