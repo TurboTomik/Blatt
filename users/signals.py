@@ -8,10 +8,10 @@ from .models import Profile, User, UserPreferences
 
 @receiver(post_save, sender=User)
 def create_user_related_models(
-    sender: Any,  # noqa: ARG001
+    sender: Any,
     instance: User,
     created: bool,
-    **kwargs: Any,  # noqa: ARG001
+    **kwargs: Any,
 ) -> None:
     """
     Signal handler to create related models when a new User is created.
