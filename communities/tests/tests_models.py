@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.db.models.query import QuerySet
 from django.utils import timezone
 
-from .models import Community, Subscription
+from ..models import Community, Subscription
 
 User = get_user_model()
 
