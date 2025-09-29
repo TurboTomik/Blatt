@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.forms import ValidationError
+from django.urls import reverse
 
 from users.models import User
 
@@ -155,6 +156,10 @@ class Community(models.Model):
         """Override save to ensure validation and normalization."""
         self.full_clean()
         super().save(**kwargs)
+
+    def get_absolute_url(self) -> str:
+        """Return the absolute URL of this community instance."""
+        return reverse("community-detail", kwargs={"name": self.name})
 
     def clean(self) -> None:
         """Additional model-level validation."""

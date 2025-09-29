@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Community
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">CREATE</button>
+    </form>
+{% endblock %}
