@@ -7,13 +7,10 @@ using pytest with Django integration, fixtures, and parametrized tests.
 
 import pytest
 from django.contrib.auth import get_user_model
-from django.http import Http404
-from django.test import Client
 from django.urls import reverse
-from django.utils.text import slugify
 
 from ..models import Community
-from ..views import CommunityDetailView, CreateCommunityView
+from ..views import CommunityDetailView
 
 User = get_user_model()
 
@@ -99,8 +96,8 @@ class TestCreateCommunityView:
         """Test that unauthenticated users are redirected to login."""
         response = client.get(create_community_url)
 
-        # assert response.status_code == 302
-        # assert "sign-in" in response.url.lower()
+        assert response.status_code == 302
+        assert "sign-in" in response.url.lower()
 
     def test_authenticated_user_can_access_create_form(
         self, authenticated_client, create_community_url
