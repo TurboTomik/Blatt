@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from communities.models import Community
 from users.models import User
@@ -39,3 +40,9 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f"Post: {self.title}"
+
+    def get_absolute_url(self) -> str:
+        """Return the absolute URL of this community instance."""
+        return reverse(
+            "post-detail", kwargs={"pk": self.pk, "name": self.community.name}
+        )
