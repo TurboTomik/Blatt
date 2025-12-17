@@ -11,7 +11,7 @@
 
 @source "../../../**/*.{html,py,js}";
 
-* {
+body {
   font-family: "Outfit", "sans-serif";
   font-size: var(--text-base);
 }
