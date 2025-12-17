@@ -28,21 +28,6 @@
   --color-border-strong: #bfbfbf;
   --color-border-muted: #e7e7e7;
 
-  /* /* Text */
-  /* --text-primary: #1a1a1a; */
-  /* --text-secondary: #4a4a4a; */
-  /* --text-tertiary: #6f6f6f; */
-  /* --text-muted: #9b9b9b; */
-
-  /* Status */
-  /* --error: #d93636; */
-  /* --warning: #e6a800; */
-  /* --success: #009a00; */
-  /**/
-  /* /* Voting */
-  /* --vote-up: #ff7a00; */
-  /* --vote-down: #3f7aff; */
-
   /* Typography scale (clamp) */
   --text-xs: clamp(0.7rem, 0.66rem + 0.2vw, 0.78rem);
   --text-sm: clamp(0.82rem, 0.77rem + 0.2vw, 0.9rem);
