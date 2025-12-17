@@ -1,0 +1,22 @@
+{% load static %}
+{% load components %}
+
+<header class="flex flex-row gap-3 items-center p-2">
+    <div class="flex flex-none flex-row gap-2">
+        <button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="none">
+                <path fill="#000" d="M37.258 11H7.742C6.78 11 6 11.78 6 12.742v.183c0 .962.78 1.742 1.742 1.742h29.516c.962 0 1.742-.78 1.742-1.742v-.183C39 11.78 38.22 11 37.258 11ZM37.258 20.667H7.742c-.962 0-1.742.78-1.742 1.741v.184c0 .962.78 1.741 1.742 1.741h29.516c.962 0 1.742-.78 1.742-1.741v-.184c0-.962-.78-1.741-1.742-1.741ZM37.258 30.333H7.742c-.962 0-1.742.78-1.742 1.742v.183C6 33.22 6.78 34 7.742 34h29.516C38.22 34 39 33.22 39 32.258v-.183c0-.962-.78-1.742-1.742-1.742Z" />
+            </svg>
+        </button>
+        <a href="/">
+            <img src="{% static 'img/leaf.svg' %}" alt="Logo" />
+        </a>
+    </div>
+    <div class="flex flex-row grow justify-center">
+        {% input_field name="q" input_type="search" placeholder="Search posts, communities, users" extra_classes="min-w-40 max-w-280" %}
+    </div>
+    <div class="flex flex-none flex-row gap-2">
+        {% button_link label="Sign Up" url="sign-up" %}
+        {% button_link label="Sign In" url="sign-in" hidden=True extra_classes="md:inline-flex" %}
+    </div>
+</header>

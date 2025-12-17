@@ -1,0 +1,11 @@
+{% load static %}
+
+<a href="{{ url|default:'#' }}"
+   class="{{ class }}"
+   {% if not url %}role="button" tabindex="0"{% endif %}
+   {% if not url %}aria-disabled="true"{% endif %}>
+    {% if icon_url %}
+        <img src="{{ icon_url }}" alt="" class="w-5 h-5" aria-hidden="true">
+    {% endif %}
+    <span>{{ label }}</span>
+</a>

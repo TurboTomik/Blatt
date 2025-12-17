@@ -1,0 +1,53 @@
+<div class="{{ container_class }}">
+    {% if label %}
+        <label for="id_{{ name }}" class="{{ label_class }}">{{ label }}</label>
+    {% endif %}
+
+    <div class="{{ wrapper_class }}">
+        {% if icon %}
+            <svg class="{{ icon_class }}"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
+                {% if icon == "search" %}
+                    <path stroke-linecap="round" stroke-width="2" d="m21 21-4.486-4.494M19 10.5a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z"/>
+                {% elif icon == "user" %}
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                {% elif icon == "email" %}
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                {% elif icon == "lock" %}
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                {% endif %}
+            </svg>
+        {% endif %}
+
+        <input type="{{ input_type }}"
+               name="{{ name }}"
+               id="id_{{ name }}"
+               value="{{ value }}"
+               placeholder="{{ placeholder }}"
+               class="{{ input_class }}"
+               {% if required %}required{% endif %}
+               {% if disabled %}disabled{% endif %}
+               {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+               {% if min_length %}minlength="{{ min_length }}"{% endif %}
+               {% if max_length %}maxlength="{{ max_length }}"{% endif %}
+               {% if error %}aria-invalid="true" aria-describedby="error_{{ name }}"{% endif %}
+               {% if help_text and not error %}aria-describedby="help_{{ name }}"{% endif %}>
+    </div>
+
+    {% if error %}
+        <p id="error_{{ name }}"
+           class="text-sm text-red-600 flex items-center gap-1">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            {{ error }}
+        </p>
+    {% endif %}
+
+    {% if help_text and not error %}
+        <p id="help_{{ name }}" class="text-sm text-gray-500">{{ help_text }}</p>
+    {% endif %}
+</div>

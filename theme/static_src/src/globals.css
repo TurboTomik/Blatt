@@ -1,0 +1,54 @@
+@theme {
+  /* BRAND */
+  --color-brand-50: #e6f7e6;
+  --color-brand-100: #c9efc9;
+  --color-brand-200: #94df94;
+  --color-brand-300: #5dce5d;
+  --color-brand-400: #2bbf2b;
+  --color-brand-500: #009a00;
+  --color-brand-600: #007a00;
+  --color-brand-700: #005f00;
+  --color-brand-800: #004500;
+  --color-brand-900: #003300;
+
+  --color-brand: var(--color-brand-500);
+  --color-brand-hover: var(--color-brand-600);
+  --color-brand-active: var(--color-brand-700);
+
+
+  /* Surfaces */
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f9f9f9;
+  --color-surface-3: #f1f1f1;
+  --color-surface-hover: #ececec;
+  --color-surface-active: #e3e3e3;
+
+  /* Borders */
+  --color-border: #dcdcdc;
+  --color-border-strong: #bfbfbf;
+  --color-border-muted: #e7e7e7;
+
+  /* /* Text */
+  /* --text-primary: #1a1a1a; */
+  /* --text-secondary: #4a4a4a; */
+  /* --text-tertiary: #6f6f6f; */
+  /* --text-muted: #9b9b9b; */
+
+  /* Status */
+  /* --error: #d93636; */
+  /* --warning: #e6a800; */
+  /* --success: #009a00; */
+  /**/
+  /* /* Voting */
+  /* --vote-up: #ff7a00; */
+  /* --vote-down: #3f7aff; */
+
+  /* Typography scale (clamp) */
+  --text-xs: clamp(0.7rem, 0.66rem + 0.2vw, 0.78rem);
+  --text-sm: clamp(0.82rem, 0.77rem + 0.2vw, 0.9rem);
+  --text-base: clamp(0.94rem, 0.89rem + 0.2vw, 1rem);
+  --text-lg: clamp(1.1rem, 1.04rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.35rem, 1.25rem + 0.5vw, 1.6rem);
+  --text-2xl: clamp(1.7rem, 1.55rem + 0.6vw, 2rem);
+  --text-3xl: clamp(2.2rem, 2rem + 0.8vw, 2.6rem);
+}
