@@ -15,7 +15,6 @@
   --color-brand-hover: var(--color-brand-600);
   --color-brand-active: var(--color-brand-700);
 
-
   /* Surfaces */
   --color-surface-1: #ffffff;
   --color-surface-2: #f9f9f9;
@@ -24,7 +23,7 @@
   --color-surface-active: #e3e3e3;
 
   /* Borders */
-  --color-border: #dcdcdc;
+  --color-border: #8f8f8f;
   --color-border-strong: #bfbfbf;
   --color-border-muted: #e7e7e7;
 
