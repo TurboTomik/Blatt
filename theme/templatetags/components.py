@@ -1,9 +1,61 @@
-from typing import Literal
+from typing import Any, Literal
 
 from django import template
+from django.forms import CharField, EmailField
+from django.forms.boundfield import BoundField
 from django.urls import reverse
 
 register = template.Library()
+
+
+@register.inclusion_tag("components/link.html")
+def link(
+    label: str,
+    url: str = "",
+    variant: Literal[
+        "primary",
+        "inherit",
+    ] = "primary",
+    hidden: bool = False,
+    extra_classes: str = "",
+) -> dict[str, str | bool | None]:
+    """Component for creating a styled link button."""
+    classes = [
+        "transition-colors",
+        "duration-200",
+    ]
+
+    if hidden:
+        classes.append("hidden")
+    else:
+        classes.append("inline")
+
+    variant_classes = {
+        "primary": [
+            "text-brand",
+            "hover:text-brand-hover",
+            "active:text-brand-active",
+        ],
+        "inherit": [
+            "text-inherit",
+            "hover:text-inherit/10",
+            "active:text-inherit/20",
+        ],
+    }
+
+    classes.extend(variant_classes[variant])
+
+    if url:
+        url = reverse(url)
+
+    if extra_classes:
+        classes.append(extra_classes)
+
+    return {
+        "label": label,
+        "url": url,
+        "class": " ".join(classes),
+    }
 
 
 @register.inclusion_tag("components/button_link.html")
@@ -56,7 +108,6 @@ def button_link(
     }
 
     classes.extend(variant_classes[variant])
-
 
     if url:
         url = reverse(url)
@@ -111,14 +162,14 @@ def input_field(
     wrapper_classes = ["relative"]
 
     input_classes = [
-        "bg-gray-50",
+        "bg-stone-100",
         "inline-flex",
         "items-center",
         "justify-center",
         "px-2",
         "py-2",
         "w-full",
-        "font-semibold",
+        "font-medium",
         "border",
         "border-border",
         "rounded-full",
@@ -139,25 +190,17 @@ def input_field(
     else:
         input_classes.extend(
             [
-                "border-gray-300",
+                "border-border",
                 "focus:ring-brand",
                 "focus:border-brand",
             ]
         )
 
     if disabled:
-        input_classes.extend(["bg-gray-100", "cursor-not-allowed", "text-gray-500"])
-    else:
-        input_classes.append("bg-white")
+        input_classes.extend(["bg-gray-500", "cursor-not-allowed", "text-gray-500"])
 
     if full_width:
         input_classes.append("w-full")
-
-    label_classes = ["text-sm", "font-medium", "text-gray-700"]
-    if required:
-        label_classes.append("after:content-['*']")
-        label_classes.append("after:ml-0.5")
-        label_classes.append("after:text-red-500")
 
     icon_classes = [
         "absolute",
@@ -207,6 +250,115 @@ def input_field(
         "container_class": " ".join(container_classes),
         "wrapper_class": " ".join(wrapper_classes),
         "input_class": " ".join(input_classes),
-        "label_class": " ".join(label_classes),
         "icon_class": " ".join(icon_classes),
+    }
+
+
+@register.inclusion_tag("components/button.html")
+def button(
+    label: str,
+    button_type: Literal["button", "submit"] = "button",
+    variant: Literal["primary", "outline", "trans"] = "primary",
+    small: bool = False,
+    hidden: bool = False,
+    disabled: bool = False,
+    full_width: bool = False,
+    icon_url: str | None = None,
+    extra_classes: str = "",
+) -> dict[str, str | bool | None]:
+    """Component for creating a styled link button."""
+    classes = [
+        "items-center",
+        "justify-center",
+        "font-semibold",
+        "rounded-full",
+        "transition-colors",
+        "duration-200",
+        "whitespace-nowrap",
+    ]
+
+    if hidden:
+        classes.append("hidden")
+    else:
+        classes.append("flex")
+
+    variant_classes = {
+        "primary": [
+            "bg-brand",
+            "text-gray-50",
+            "hover:bg-brand-hover",
+            "active:bg-brand-active",
+        ],
+        "outline": [
+            "border-2",
+            "border-brand",
+            "text-brand",
+            "hover:bg-brand",
+            "hover:text-gray-50",
+            "active:bg-brand-active",
+        ],
+        "trans": [
+            "text-brand",
+            "hover:bg-brand/10",
+            "active:bg-brand/20",
+        ],
+    }
+
+    classes.extend(variant_classes[variant])
+
+    if small:
+        classes.extend(["px-2", "py-1", "text-sm"])
+        if icon_url:
+            classes.append("gap-1")
+    else:
+        classes.extend(["px-3", "py-2"])
+        if icon_url:
+            classes.append("gap-2")
+
+    if full_width:
+        classes.append("w-full")
+
+    if extra_classes:
+        classes.append(extra_classes)
+
+    return {
+        "label": label,
+        "button_type": button_type,
+        "class": " ".join(classes),
+        "disabled": disabled,
+        "icon_url": icon_url,
+    }
+
+
+@register.inclusion_tag("components/form_field.html")
+def form_field(field: BoundField, **kwargs: Any) -> dict:
+    """Render a Django form field using the input_field component."""
+    input_type = "text"
+    icon = kwargs.get("icon", "")
+
+    field_instance = field.field
+
+    if isinstance(field_instance, EmailField):
+        input_type = "email"
+        icon = icon or "email"
+    elif isinstance(field_instance, CharField):
+        widget_class_name = field_instance.widget.__class__.__name__
+        if widget_class_name == "PasswordInput":
+            input_type = "password"
+            icon = icon or "lock"
+        elif widget_class_name == "Textarea":
+            input_type = "text"
+
+    return {
+        "name": field.name,
+        "input_type": input_type,
+        "label": field.label,
+        "value": field.value() or "",
+        "required": field.field.required,
+        "error": field.errors[0] if field.errors else "",
+        "help_text": field.help_text,
+        "icon": icon,
+        "placeholder": kwargs.get("placeholder", ""),
+        "min_length": getattr(field.field, "min_length", None),
+        "max_length": getattr(field.field, "max_length", None),
     }

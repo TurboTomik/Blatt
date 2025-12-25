@@ -1,15 +1,41 @@
 {% extends "base.html" %}
 
+{% load components %}
+
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-    <form action="/sign-up/" method="post">
-        <fieldset>
-            <legend>Register an account</legend>
+    <div class="px-3 flex flex-col gap-2 max-w-xl mx-auto">
+        <div>
+            <h1 class="text-2xl font-bold">Create your account</h1>
+            <p class="text-lg">Get started with your new account</p>
+        </div>
+        <form action="/sign-up/" method="post" class="flex flex-col gap-3">
             {% csrf_token %}
-            {{ form }}
-            <button type="submit">Register</button>
-        </fieldset>
-    </form>
-    <a href="{% url 'sign-in' %}">Sign in</a>
+            <!-- {% input_field name="username" label="Username" placeholder="user_name" required=True icon="user" min_length=4 max_length=30 %} -->
+            <!-- {% input_field name="email" input_type="email" label="Email" placeholder="blatt@leaf.com" required=True autocomplete="email" min_length=4 max_length=256 %} -->
+            <!-- {% input_field name="password1" input_type="password" label="Password" placeholder="password.123" required=True min_length=8 max_length=30 %} -->
+            <!-- {% input_field name="password2" input_type="password" label="Confirm Password" placeholder="password.123" required=True min_length=8 max_length=30 %} -->
+
+            {% form_field form.username icon="user" placeholder="user_name" %}
+            {% form_field form.email placeholder="blatt@leaf.com" %}
+            {% form_field form.password1 placeholder="password.123" %}
+            {% form_field form.password2 placeholder="password.123" %}
+
+            {% if form.non_field_errors %}
+                <div class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+
+            {% button label="Sign Up" button_type="submit" extra_classes="my-2" %}
+        </form>
+        <div class="flex gap-2 font-medium justify-center p-2 border-t border-border">
+            <p>Already have an account?</p>
+            {% link label="Sign In" url="sign-in" %}
+        </div>
+    </div>
 {% endblock %}

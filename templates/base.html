@@ -15,7 +15,11 @@
         </title>
     </head>
     <body>
-        {% include "components/header.html" %}
+        {% if not header_alt %}
+            {% include "components/header.html" %}
+        {% else %}
+            {% include "components/header_alt.html" %}
+        {% endif %}
         {% block content %}{% endblock %}
     </body>
 </html>

@@ -38,7 +38,7 @@ class UserRegisterView(View):
             HttpResponse: Rendered registration page with empty form.
         """
         form = self.form_class()
-        return render(request, self.template_name, {"form": form})
+        return render(request, self.template_name, {"form": form, "header_alt": True})
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """

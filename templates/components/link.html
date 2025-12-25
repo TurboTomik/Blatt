@@ -1,0 +1,5 @@
+<a href="{{ url|default:'#' }}"
+   class="{{ class }}"
+   {% if not url %}aria-disabled="true"{% endif %}>
+    <span>{{ label }}</span>
+</a>
