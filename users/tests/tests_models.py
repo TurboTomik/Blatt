@@ -93,6 +93,29 @@ class TestUserModel:
             ).full_clean()
 
     @pytest.mark.django_db
+    @pytest.mark.parametrize(
+        "valid_username", ["user_name", "i_am_human", "mr_mann99", "1_duck_1"]
+    )
+    def test_valid_username(self, valid_username):
+        """Test that valid username allowed."""
+        User.objects.create_user(
+            username=valid_username, email="test@example.com", password="Testpass.123"
+        )
+
+    @pytest.mark.django_db
+    @pytest.mark.parametrize(
+        "invalid_username", ["user__name", "I_am_Human", "mr_mann!99", "|duck|"]
+    )
+    def test_invalid_username(self, invalid_username):
+        """Test that valid username allowed."""
+        with pytest.raises(ValidationError):
+            User.objects.create_user(
+                username=invalid_username,
+                email="test@example.com",
+                password="Testpass.123",
+            )
+
+    @pytest.mark.django_db
     def test_email_uniqueness(self, user):
         """Test that email must be unique."""
         with pytest.raises(IntegrityError):
@@ -726,24 +749,6 @@ class TestEdgeCases:
 
 class TestPostgreSQLSpecific:
     """Tests specific to PostgreSQL database features."""
-
-    @pytest.mark.django_db
-    def test_case_sensitive_usernames(self):
-        """Test that PostgreSQL treats usernames as case-sensitive."""
-        User.objects.create_user(
-            username="TestUser",
-            email="test1@example.com",
-            password="Password!123",
-        )
-
-        # This should work as PostgreSQL is case-sensitive
-        User.objects.create_user(
-            username="testuser",
-            email="test2@example.com",
-            password="Password!123",
-        )
-
-        assert User.objects.filter(username__iexact="testuser").count() == 2
 
     @pytest.mark.django_db
     def test_email_case_insensitivity(self):

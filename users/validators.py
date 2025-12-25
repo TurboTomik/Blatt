@@ -59,12 +59,13 @@ class UserPasswordValidator:
             )
 
 
+@deconstructible
 class UserUsernameValidator:
     """Validator class for user username."""
 
     MIN_LENGTH = 3
     MAX_LENGTH = 30
-    PATTERN = r"^[a-zA-Z0-9_]+$"
+    PATTERN = r"^[a-z0-9_]+$"
 
     def __init__(
         self,
@@ -101,7 +102,7 @@ class UserUsernameValidator:
         """Validate character pattern."""
         if not re.fullmatch(self.PATTERN, value):
             raise ValidationError(
-                "Username can only contain letters, numbers and underscores.",
+                "Username can only contain lower case letters, numbers and underscores.",
                 code="invalid_characters",
             )
 

@@ -9,7 +9,7 @@ class UserRegisterForm(forms.Form):
     A registration form for creating new user accounts.
 
     Fields:
-        username (CharField): The desired username (max 100 characters).
+        username (CharField): The desired username (max 30 characters).
         email (EmailField): The user's email address (max 250 characters).
         password1 (CharField): The user's chosen password (8-128 characters).
         password2 (CharField): Confirmation of the chosen password (8-128 characters).
@@ -21,7 +21,7 @@ class UserRegisterForm(forms.Form):
 
     username = forms.CharField(
         label="Username",
-        max_length=100,
+        max_length=30,
         min_length=3,
         validators=(UserUsernameValidator(),),
     )
