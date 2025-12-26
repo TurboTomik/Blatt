@@ -1,22 +1,29 @@
 {% extends "base.html" %}
-
+{% load components %}
 {% block title %}Sign In{% endblock %}
-
 {% block content %}
-    <form action="/sign-in/" method="post">
-        <fieldset>
-            <legend>Login into account</legend>
+    <div class="px-3 flex flex-col gap-2 max-w-xl mx-auto">
+        <div>
+            <h1 class="text-2xl font-bold">Welcome back</h1>
+            <p class="text-lg">Sign in to your account</p>
+        </div>
+        <form action="/sign-in/" method="post" class="flex flex-col gap-3">
             {% csrf_token %}
-            {{ form }}
-            <button type="submit">Login</button>
-        </fieldset>
-    </form>
-    <a href="{% url 'sign-up' %}">Sign up</a>
-    {% if user.is_authenticated %}
-        <p>You're login as <strong>{{ user.username }}({{ user.email }})</strong></p>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
+            {% form_field form.username icon="user" placeholder="user_name" %}
+            {% form_field form.password placeholder="password.123" %}
+            {% if form.non_field_errors %}
+                <div class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+            {% button label="Sign In" button_type="submit" extra_classes="my-2" %}
         </form>
-    {% endif %}
+        <div class="flex gap-2 font-medium justify-center p-2 border-t border-border">
+            <p>Don't have an account?</p>
+            {% link label="Create One" url="sign-up" %}
+        </div>
+    </div>
 {% endblock %}
