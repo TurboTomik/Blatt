@@ -1,9 +1,6 @@
 {% extends "base.html" %}
-
 {% load components %}
-
 {% block title %}Sign Up{% endblock %}
-
 {% block content %}
     <div class="px-3 flex flex-col gap-2 max-w-xl mx-auto">
         <div>
@@ -12,16 +9,10 @@
         </div>
         <form action="/sign-up/" method="post" class="flex flex-col gap-3">
             {% csrf_token %}
-            <!-- {% input_field name="username" label="Username" placeholder="user_name" required=True icon="user" min_length=4 max_length=30 %} -->
-            <!-- {% input_field name="email" input_type="email" label="Email" placeholder="blatt@leaf.com" required=True autocomplete="email" min_length=4 max_length=256 %} -->
-            <!-- {% input_field name="password1" input_type="password" label="Password" placeholder="password.123" required=True min_length=8 max_length=30 %} -->
-            <!-- {% input_field name="password2" input_type="password" label="Confirm Password" placeholder="password.123" required=True min_length=8 max_length=30 %} -->
-
             {% form_field form.username icon="user" placeholder="user_name" %}
             {% form_field form.email placeholder="blatt@leaf.com" %}
             {% form_field form.password1 placeholder="password.123" %}
             {% form_field form.password2 placeholder="password.123" %}
-
             {% if form.non_field_errors %}
                 <div class="text-sm text-red-600 flex items-center gap-1 shrink-0">
                     <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -30,7 +21,6 @@
                     {{ form.non_field_errors.0 }}
                 </div>
             {% endif %}
-
             {% button label="Sign Up" button_type="submit" extra_classes="my-2" %}
         </form>
         <div class="flex gap-2 font-medium justify-center p-2 border-t border-border">
