@@ -6,8 +6,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import (
     EmailValidator,
     MaxLengthValidator,
-    MinLengthValidator,
-    RegexValidator,
 )
 from django.db import models
 from django.utils import timezone
@@ -275,17 +273,17 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return f"{self.user.username}'s profile"
 
-    def get_avatar_url(self) -> str:
+    @property
+    def avatar_url(self) -> str:
         """
         Get the URL for the user's avatar or a default avatar.
 
         Returns:
             URL to the avatar image
         """
-        if self.avatar and self.avatar.url:
-            return self.avatar.url
+        from django.templatetags.static import static
 
-        return settings.DEFAULT_AVATAR_URL
+        return self.avatar.url if self.avatar else static("img/default_avatar.jpg")
 
     def get_social_links(self) -> dict:
         """

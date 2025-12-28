@@ -11,4 +11,5 @@ urlpatterns = [
         LogoutView.as_view(),
         name="logout",
     ),
+    path("u/<str:username>/", views.UserPageView.as_view(), name="user-detail"),
 ]

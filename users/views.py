@@ -3,8 +3,10 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
+from django.views.generic import DetailView
 
 from .forms import UserLoginForm, UserRegisterForm
+from .models import User
 from .services import UserAuthService
 
 
@@ -128,3 +130,27 @@ class UserLoginView(View):
             form.add_error(None, result.error_message)
 
         return render(request, self.template_name, {"form": form})
+
+
+class UserPageView(DetailView):
+    """
+    Display detailed information for a single user.
+
+    This view retrieves a User instance based on the username provided
+    in the URL and renders it to the specified template. It handles
+    fetching the user object and passing it to the template context
+    for display.
+
+    Attributes:
+        model: The model class representing users (User).
+        context_object_name: The name under which the user object
+            is accessible in the template context.
+        slug_field: The model field used to look up the user (username).
+        slug_url_kwarg: The URL keyword argument that provides the
+            username for lookup.
+    """
+
+    model = User
+    context_object_name = "profile_user"
+    slug_field = "username"
+    slug_url_kwarg = "username"

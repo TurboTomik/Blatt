@@ -473,11 +473,10 @@ class TestProfileModel:
         assert Profile._meta.db_table == "user_profile"
 
     @pytest.mark.django_db
-    @patch("django.conf.settings.DEFAULT_AVATAR_URL", "https://example.com/default.jpg")
     def test_get_avatar_url_no_avatar(self, profile):
         """Test get_avatar_url returns default when no avatar."""
-        url = profile.get_avatar_url()
-        assert url == "https://example.com/default.jpg"
+        url = profile.avatar_url
+        assert url == "/static/img/default_avatar.jpg"
 
     @pytest.mark.django_db
     def test_get_avatar_url_with_avatar(self, profile):
@@ -487,7 +486,7 @@ class TestProfileModel:
         with patch.object(
             profile.avatar.storage, "url", return_value="/media/" + profile.avatar.name
         ):
-            url = profile.get_avatar_url()
+            url = profile.avatar_url
             assert url == "/media/avatars/test.jpg"
 
     @pytest.mark.django_db
