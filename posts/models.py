@@ -32,6 +32,7 @@ class Post(models.Model):
 
     class Meta:
         db_table = "post"
+        ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["community", "-created_at"]),
             models.Index(fields=["user", "-created_at"]),
