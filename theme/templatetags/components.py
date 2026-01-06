@@ -256,14 +256,16 @@ def input_field(
 
 @register.inclusion_tag("components/button.html")
 def button(
-    label: str,
+    label: str | None = None,
     button_type: Literal["button", "submit"] = "button",
-    variant: Literal["primary", "outline", "trans"] = "primary",
+    variant: Literal[
+        "primary", "outline", "trans", "error", "error-outline"
+    ] = "primary",
     small: bool = False,
     hidden: bool = False,
     disabled: bool = False,
     full_width: bool = False,
-    icon_url: str | None = None,
+    icon: str | None = None,
     extra_classes: str = "",
 ) -> dict[str, str | bool | None]:
     """Component for creating a styled link button."""
@@ -302,17 +304,32 @@ def button(
             "hover:bg-brand/10",
             "active:bg-brand/20",
         ],
+        "error": [
+            "bg-red-600",
+            "text-gray-50",
+            "hover:bg-red-800",
+            "active:bg-red-800",
+        ],
+        "error-outline": [
+            "text-gray-50",
+            "border-2",
+            "border-red-600",
+            "text-red-600",
+            "hover:bg-red-600",
+            "hover:text-gray-50",
+            "active:bg-red-600",
+        ],
     }
 
     classes.extend(variant_classes[variant])
 
     if small:
         classes.extend(["px-2", "py-1", "text-sm"])
-        if icon_url:
+        if icon:
             classes.append("gap-1")
     else:
         classes.extend(["px-3", "py-2"])
-        if icon_url:
+        if icon:
             classes.append("gap-2")
 
     if full_width:
@@ -326,7 +343,7 @@ def button(
         "button_type": button_type,
         "class": " ".join(classes),
         "disabled": disabled,
-        "icon_url": icon_url,
+        "icon": icon,
     }
 
 
