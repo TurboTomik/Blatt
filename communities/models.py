@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from users.models import User
 
+from .utils import community_avatar_path
 from .validators import validate_community_description, validate_community_name
 
 
@@ -134,6 +135,14 @@ class Community(models.Model):
         help_text="User who created this community",
     )
 
+    avatar = models.ImageField(
+        "avatar",
+        upload_to=community_avatar_path,
+        null=True,
+        blank=True,
+        help_text="Upload a community avatar (max 2MB, square image recommended).",
+    )
+
     objects = CommunityManager()
 
     class Meta:
@@ -196,6 +205,18 @@ class Community(models.Model):
         if not user or not user.is_authenticated:
             return False
         return self.subscriptions.filter(user=user).exists()
+
+    @property
+    def avatar_url(self) -> str:
+        """
+        Get the URL for the user's avatar or a default avatar.
+
+        Returns:
+            URL to the avatar image
+        """
+        from django.templatetags.static import static
+
+        return self.avatar.url if self.avatar else static("img/default_com_avatar.jpg")
 
 
 class SubscriptionManager(models.Manager):
