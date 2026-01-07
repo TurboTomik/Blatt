@@ -1,0 +1,52 @@
+{% load components %}
+{% load tags_extra %}
+<article class="flex flex-col gap-1 items-stretch w-full min-w-xs max-w-5xl p-2 rounded-2xl border border-border">
+    <header class="flex justify-between py-1">
+        <div class="flex gap-1 items-center">
+            <div class="flex gap-1 text-base font-medium">
+                {% if is_community %}
+                    <a href="{% url 'user-detail' post.user.username %}"
+                       class="flex gap-1 hover:underline">
+                        <img src="{{ post.user.profile.avatar_url }}"
+                             alt=""
+                             width="22"
+                             height="22"
+                             class="rounded-full" />
+                        <span>u/{{ post.user.username }}</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'community-detail' post.community.name %}"
+                       class="flex gap-1 hover:underline">
+                        <img src="{{ post.community.avatar_url }}"
+                             alt=""
+                             width="22"
+                             height="22"
+                             class="rounded-full" />
+                        <span>c/{{ post.community.name }}</span>
+                    </a>
+                {% endif %}
+                <span class="text-gray-500">•</span>
+                <span class="text-gray-500">{{ post.created_at|datesince }}</span>
+            </div>
+        </div>
+        <div class="flex gap-1 items-center">
+            {% if is_community %}
+                {% button label="Follow" button_type="button" small=True %}
+            {% else %}
+                {% include "join_button.html" %}
+            {% endif %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none">
+                <path fill="#000" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4.469a1.031 1.031 0 1 0 0-2.063 1.031 1.031 0 0 0 0 2.063ZM11 12.031a1.031 1.031 0 1 0 0-2.062 1.031 1.031 0 0 0 0 2.062ZM11 19.594a1.031 1.031 0 1 0 0-2.063 1.031 1.031 0 0 0 0 2.063Z" />
+            </svg>
+        </div>
+    </header>
+    <div>
+        <a href="{% url 'post-detail' post.community.name post.pk %}">
+            <h2 class="text-xl font-medium wrap-break-word">{{ post.title|truncatechars:100 }}</h2>
+            <p class="text-lg wrap-break-word">{{ post.body|truncatechars:200 }}</p>
+        </a>
+    </div>
+    <footer class="flex gap-1 items-center pt-1">
+        {% include "vote_counter.html" %}
+    </footer>
+</article>
