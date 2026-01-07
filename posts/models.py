@@ -42,6 +42,10 @@ class Post(models.Model):
     def __str__(self) -> str:
         return f"Post: {self.title}"
 
+    @property
+    def votes(self) -> int:
+        return self.up_votes - self.down_votes
+
     def get_absolute_url(self) -> str:
         """Return the absolute URL of this community instance."""
         return reverse(
