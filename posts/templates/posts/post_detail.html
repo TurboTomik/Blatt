@@ -1,11 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %}{{ post.title }}{% endblock %}
-
 {% block content %}
-<h1>{{ post.title }}</h1>
-<p>{{ post.body }}</p>
-<p>Votes: +{{ post.up_votes }} -{{ post.down_votes }}</p>
-<p>Author: {{ post.user.username }}</p>
-<p>Published on: {{ post.created_at|date:"G:i j M Y"}}</p>
+    {% include "components/post.html" %}
 {% endblock %}
