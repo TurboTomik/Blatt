@@ -30,6 +30,31 @@ class CommunityDetailView(DetailView):
     model = Community
     slug_field = "name"
     slug_url_kwarg = "name"
+    context_object_name = "community"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """
+        Extend the default context data with subscription information.
+
+        Returns:
+            dict[str, Any]: Context data passed to the template.
+        """
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        community = self.object
+
+        context["is_subscribed"] = user.is_authenticated and community.is_subscribed_by(
+            user
+        )
+
+        context["posts"] = Post.objects.filter(community=community)
+
+        context["is_community"] = True
+
+        return context
+
+
 class CommunityJoinView(LoginRequiredMixin, View):
     """Handle a POST request that allows an authenticated user to join a community."""
 

@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-
-{% block title %}
-  {{ object.name }}
-{% endblock %}
-
+{% load components %}
+{% block title %}{{ community.name }}{% endblock %}
 {% block content %}
-  <h1>{{ object.name }}</h1>
-  <p>{{ object.description }}</p>
-  <p>Creator: {{ object.creator.username }}</p>
+    {% include "components/community_header.html" %}
+    <div class="flex flex-col items-center gap-3">
+        {% for post in posts %}
+            {% include "components/post_card.html" %}
+        {% empty %}
+            <p>This community has no posts.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
