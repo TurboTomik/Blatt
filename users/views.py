@@ -5,6 +5,9 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView
 
+from communities.models import Community, Subscription
+from posts.models import Post
+
 from .forms import UserLoginForm, UserRegisterForm
 from .models import User
 from .services import UserAuthService
@@ -154,3 +157,12 @@ class UserPageView(DetailView):
     context_object_name = "profile_user"
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.object
+        context["posts"] = Post.objects.filter(user=user)
+        context["subscriptions"] = Community.objects.filter(
+            subscriptions__user=self.request.user
+        )
+        return context

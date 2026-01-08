@@ -3,4 +3,11 @@
 {% block title %}{{ profile_user.username }}{% endblock %}
 {% block content %}
     {% include "components/user_header.html" %}
+    <div class="flex flex-col items-center gap-3">
+        {% for post in posts %}
+            {% include "components/post_card.html" %}
+        {% empty %}
+            <p>This user has no posts.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
