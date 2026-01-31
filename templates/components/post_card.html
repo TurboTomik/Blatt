@@ -41,7 +41,7 @@
         </div>
     </header>
     <div>
-        <a href="{% url 'post-detail' post.community.name post.pk %}">
+        <a href="{% url 'post-detail' post.pk %}">
             <h2 class="text-xl font-medium wrap-break-word">{{ post.title|truncatechars:100 }}</h2>
             <p class="text-lg wrap-break-word">{{ post.body|truncatechars:200 }}</p>
         </a>
