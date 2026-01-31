@@ -9,5 +9,4 @@ urlpatterns = [
     path(
         "<str:name>/leave/", views.CommunityLeaveView.as_view(), name="community-leave"
     ),
-    path("<str:name>/post/", include("posts.urls")),
 ]
