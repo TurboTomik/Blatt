@@ -3,7 +3,7 @@
 {% block title %}{{ profile_user.username }}{% endblock %}
 {% block content %}
     {% include "components/user_header.html" %}
-    <div class="flex flex-col items-center gap-3">
+    <div class="flex flex-col items-center gap-3 px-2">
         {% for post in posts %}
             {% include "components/post_card.html" %}
         {% empty %}
