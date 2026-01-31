@@ -162,7 +162,11 @@ class UserPageView(DetailView):
         context = super().get_context_data(**kwargs)
         user = self.object
         context["posts"] = Post.objects.filter(user=user)
-        context["subscriptions"] = Community.objects.filter(
-            subscriptions__user=self.request.user
-        )
+        if self.request.user.is_authenticated:
+            context["subscriptions"] = Community.objects.filter(
+                subscriptions__user=self.request.user
+            )
+        else:
+            context["subscriptions"] = []
+
         return context
