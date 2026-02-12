@@ -1,0 +1,30 @@
+<div class="p-2 max-w-5xl mx-auto">
+    <section class="flex flex-row justify-between items-center p-2">
+        <div class="flex gap-1 items-center py-2">
+            <div class="avatar">
+                <div class="w-24 rounded-full">
+                    <img src="{{ profile_user.profile.avatar_url }}"
+                         alt="{{ profile_user.username }}'s avatar"
+                         width="72"
+                         height="72" />
+                </div>
+            </div>
+            <div class="flex flex-col text-xl">
+                <p class="font-semibold">u/{{ profile_user.username }}</p>
+            </div>
+        </div>
+        <div class="flex flex-col gap-3 items-end py-2">
+            <button type="button">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 32 32">
+                    <circle cx="16" cy="8" r="2" fill="currentColor" /><circle cx="16" cy="16" r="2" fill="currentColor" /><circle cx="16" cy="24" r="2" fill="currentColor" />
+                </svg>
+            </button>
+            {% if user == profile_user %}
+                <button class="btn btn-outline btn-primary rounded-full" type="button">Edit</button>
+            {% endif %}
+        </div>
+    </section>
+</div>

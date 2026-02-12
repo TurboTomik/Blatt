@@ -1,10 +1,84 @@
 {% extends "base.html" %}
-
-{% block title %}Create new Post{% endblock  %}
-
+{% block title %}Create new Post{% endblock %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Post</button>
+    <div class="px-3 py-4 flex flex-col gap-2 border-base-300 rounded-2xl max-w-xl mx-auto sm:bg-base-200 sm:border sm:mt-10">
+        <h1 class="text-2xl font-bold">Create a Post</h1>
+        <form action="{% url 'post-create' %}" method="post" class="fieldset">
+            {% csrf_token %}
+            <label class="fieldset">
+                <span class="label">Title</span>
+                <label class="input rounded-full w-full">
+                    <input type="text"
+                           name="title"
+                           required
+                           placeholder="What's your post about?"
+                           value="{{ form.title.value|default:'' }}"
+                           title="Title of your post" />
+                </label>
+                {% if form.title.errors %}
+                    <ul>
+                        {% for error in form.title.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            <label class="fieldset">
+                <span class="label">Content</span>
+                <textarea class="textarea rounded-lg border px-2 h-26 w-full"
+                          name="body"
+                          placeholder="Write your post here..."
+                          title="Content of your post"></textarea>
+            </label>
+            {% if form.body.errors %}
+                <ul>
+                    {% for error in form.body.errors %}
+                        <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            {{ error|striptags }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <label class="fieldset">
+                <span class="label">Community</span>
+                <select class="select rounded-full w-full" name="community">
+                    <option disabled selected>Select a community</option>
+                    {% for subscription in request.user.subscriptions.all %}
+                        <option value="{{ subscription.community.id }}">{{ subscription.community.name }}</option>
+                    {% empty %}
+                        <option disabled>No subscriptions</option>
+                    {% endfor %}
+                </select>
+                {% if form.community.errors %}
+                    <ul>
+                        {% for error in form.community.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            {% if form.non_field_errors %}
+                <div class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+            <button class="btn btn-primary mt-4 rounded-full w-full" type="submit">Create Post</button>
+        </form>
+    </div>
 {% endblock %}

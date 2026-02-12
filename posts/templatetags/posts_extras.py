@@ -65,7 +65,7 @@ def datesince(d: datetime.datetime | None) -> str:
     # Older than a minute -> "15m ago"
     if seconds >= 60:
         minutes = seconds // 60
-        return f"{minutes}m ago"
+        return f"{minutes}min ago"
 
     # Just now threshold
     if seconds < 5:

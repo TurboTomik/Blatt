@@ -48,12 +48,8 @@ INSTALLED_APPS = [
     "users",
     "communities",
     "posts",
-    "tailwind",
-    "theme",
 ]
 
-
-TAILWIND_APP_NAME = "theme"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

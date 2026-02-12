@@ -1,0 +1,47 @@
+{% load static %}
+<header class="navbar bg-base-100 shadow-sm gap-5 p-2">
+    <div class="navbar-start gap-2 flex-none w-fit">
+        <button tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path fill="currentColor" fill-rule="evenodd" d="M19.75 12a.75.75 0 0 0-.75-.75H5a.75.75 0 0 0 0 1.5h14a.75.75 0 0 0 .75-.75m0-5a.75.75 0 0 0-.75-.75H5a.75.75 0 0 0 0 1.5h14a.75.75 0 0 0 .75-.75m0 10a.75.75 0 0 0-.75-.75H5a.75.75 0 0 0 0 1.5h14a.75.75 0 0 0 .75-.75" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <a class="hidden sm:block" href="/">
+            <img src="{% static 'img/leaf.svg' %}" width="40" height="40" alt="Logo" />
+        </a>
+    </div>
+    <div class="navbar-center flex-1 justify-center mr-10 sm:m-0">
+        <label class="input rounded-full bg-base-200 outline-primary w-full min-w-20 sm:max-w-3/4 lg:max-w-1/2 transition-all duration-300 focus-within:max-w-280 focus-within:border-none">
+            <svg class="h-5"
+                 xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
+                <path stroke-linecap="round" stroke-width="2" d="m21 21-4.486-4.494M19 10.5a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z" />
+            </svg>
+            <input name="q"
+                   type="search"
+                   required
+                   placeholder="Search posts, communities, users..." />
+        </label>
+    </div>
+    <div class="navbar-end gap-2 flex-none w-fit hidden sm:flex">
+        {% if request.user.is_authenticated %}
+            <a class="btn btn-outline btn-primary rounded-full"
+               href="{% url 'post-create' %}">Create</a>
+            <a class="avatar" href="{% url "user-detail" request.user.username %}">
+                <div class="w-10 rounded-full outline-primary outline-offset-2 hover:outline">
+                    <img src="{{ request.user.profile.avatar_url }}"
+                         width="40"
+                         height="40"
+                         alt="My profile" />
+                </div>
+            </a>
+        {% else %}
+            <a class="btn btn-outline btn-primary rounded-full"
+               href="{% url 'sign-up' %}">Sign Up</a>
+            <a class="btn btn-primary rounded-full" href="{% url 'sign-in' %}">Sign In</a>
+        {% endif %}
+    </div>
+</header>

@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #007a00;
+  --color-secondary: #2553eb;
+}
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  --color-primary: #009a00;
+  --color-secondary: #2595eb;
+}
+
+@theme {
+  --text-xs: clamp(0.7rem, 0.66rem + 0.2vw, 0.78rem);
+  --text-sm: clamp(0.82rem, 0.77rem + 0.2vw, 0.9rem);
+  --text-base: clamp(0.94rem, 0.89rem + 0.2vw, 1rem);
+  --text-lg: clamp(1.1rem, 1.04rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.35rem, 1.25rem + 0.5vw, 1.6rem);
+  --text-2xl: clamp(1.7rem, 1.55rem + 0.6vw, 2rem);
+  --text-3xl: clamp(2.2rem, 2rem + 0.8vw, 2.6rem);
+}
+
+body {
+  font-family: "Outfit", "sans-serif";
+  font-size: var(--text-base);
+}

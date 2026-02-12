@@ -1,31 +1,152 @@
 {% extends "base.html" %}
-{% load components %}
 {% block title %}Sign Up{% endblock %}
 {% block content %}
-    <div class="px-3 flex flex-col gap-2 max-w-xl mx-auto">
+    <div class="px-3 py-4 flex flex-col gap-2 border-base-300 rounded-2xl max-w-xl mx-auto sm:bg-base-200 sm:border sm:mt-10">
         <div>
             <h1 class="text-2xl font-bold">Create your account</h1>
             <p class="text-lg">Get started with your new account</p>
         </div>
-        <form action="/sign-up/" method="post" class="flex flex-col gap-3">
+        <form action="{% url 'sign-up' %}" method="post" class="fieldset">
             {% csrf_token %}
-            {% form_field form.username icon="user" placeholder="user_name" %}
-            {% form_field form.email placeholder="blatt@leaf.com" %}
-            {% form_field form.password1 placeholder="password.123" %}
-            {% form_field form.password2 placeholder="password.123" %}
-            {% if form.non_field_errors %}
-                <div class="text-sm text-red-600 flex items-center gap-1 shrink-0">
-                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            <label class="fieldset">
+                <span class="label">Username</span>
+                <label class="input validator rounded-full w-full">
+                    <svg class="h-[1em] opacity-50"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 1024 1024">
+                        <path fill="currentColor" d="M858.5 763.6a374 374 0 0 0-80.6-119.5 375.63 375.63 0 0 0-119.5-80.6c-.4-.2-.8-.3-1.2-.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-.4.2-.8.3-1.2.5-44.8 18.9-85 46-119.5 80.6a375.63 375.63 0 0 0-80.6 119.5A371.7 371.7 0 0 0 136 901.8a8 8 0 0 0 8 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c.1 4.4 3.6 7.8 8 7.8h60a8 8 0 0 0 8-8.2c-1-47.8-10.9-94.3-29.5-138.2M512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534" />
                     </svg>
-                    {{ form.non_field_errors.0 }}
-                </div>
+                    <input type="text"
+                           name="username"
+                           required
+                           placeholder="Username"
+                           pattern="^[a-z0-9]+(?:_[a-z0-9]+)*$"
+                           value="{{ form.username.value|default:'' }}"
+                           minlength="3"
+                           maxlength="30"
+                           title="Only letters, numbers or underscore" />
+                </label>
+                {% if form.username.errors %}
+                    <ul>
+                        {% for error in form.username.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            <label class="fieldset">
+                <span class="label">Email</span>
+                <label class="input validator rounded-full w-full">
+                    <svg class="h-[1em] opacity-50"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 32 32">
+                        <path fill="currentColor" d="M28 6H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2m-2.2 2L16 14.78 6.2 8ZM4 24V8.91l11.43 7.91a1 1 0 0 0 1.14 0L28 8.91V24Z" />
+                    </svg>
+                    <input type="email"
+                           name="email"
+                           placeholder="leaf@blatt.com"
+                           value="{{ form.email.value|default:'' }}"
+                           required>
+                </label>
+                {% if form.email.errors %}
+                    <ul>
+                        {% for error in form.email.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            <label class="fieldset">
+                <span class="label">Password</span>
+                <label class="input validator rounded-full w-full">
+                    <svg class="h-[1em] opacity-50"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 16 16">
+                        <g fill="currentColor">
+                        <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5" />
+                        <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                        </g>
+                    </svg>
+                    <input type="password"
+                           name="password1"
+                           placeholder="password.123"
+                           minlength="8"
+                           pattern="(?=.*\d)(?=.*[a-zA-Z0-9]).{8,}"
+                           title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                           required>
+                </label>
+                {% if form.password1.errors %}
+                    <ul>
+                        {% for error in form.password1.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            <label class="fieldset">
+                <span class="label">Confirm Password</span>
+                <label class="input validator rounded-full w-full">
+                    <svg class="h-[1em] opacity-50"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 16 16">
+                        <g fill="currentColor">
+                        <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5" />
+                        <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                        </g>
+                    </svg>
+                    <input type="password"
+                           name="password2"
+                           placeholder="password.123"
+                           minlength="8"
+                           pattern="(?=.*\d)(?=.*[a-zA-Z0-9]).{8,}"
+                           title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                           required>
+                </label>
+                {% if form.password2.errors %}
+                    <ul>
+                        {% for error in form.password2.errors %}
+                            <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                {{ error|striptags }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </label>
+            {% if form.non_field_errors %}
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li class="text-sm text-red-600 flex items-center gap-1 shrink-0">
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            {{ error|striptags }}
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
-            {% button label="Sign Up" button_type="submit" extra_classes="my-2" %}
+            <button class="btn btn-primary mt-4 rounded-full w-full" type="submit">Sign up</button>
         </form>
         <div class="flex gap-2 font-medium justify-center p-2 border-t border-border">
             <p>Already have an account?</p>
-            {% link label="Sign In" url="sign-in" %}
+            <a class="text-primary" href="{% url 'sign-in' %}">Sign In</a>
         </div>
     </div>
 {% endblock %}

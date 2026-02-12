@@ -48,6 +48,4 @@ class Post(models.Model):
 
     def get_absolute_url(self) -> str:
         """Return the absolute URL of this community instance."""
-        return reverse(
-            "post-detail", kwargs={"pk": self.pk, "name": self.community.name}
-        )
+        return reverse("post-detail", kwargs={"pk": self.pk})

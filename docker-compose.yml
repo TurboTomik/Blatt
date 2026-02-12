@@ -14,7 +14,9 @@ services:
       retries: 5
 
   django:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.django
     command: uv run manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
@@ -34,15 +36,14 @@ services:
         condition: service_healthy
 
   tailwind:
-    build: .
-    command: uv run manage.py tailwind start
+    build:
+      context: .
+      dockerfile: Dockerfile.tailwind
+    user: root
+    command: npm run tailwind
     volumes:
       - .:/app
-      - /app/.venv
-      - /app/node_modules
-    depends_on:
-      django:
-        condition: service_started
+    tty: true
 
 volumes:
   postgres_data:

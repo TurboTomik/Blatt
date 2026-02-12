@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-{% load components %}
 {% block title %}{{ community.name }}{% endblock %}
 {% block content %}
-    {% include "components/community_header.html" %}
+    {% include "community_header.html" %}
     <div class="flex flex-col items-center gap-3 px-2">
         {% for post in posts %}
-            {% include "components/post_card.html" %}
+            {% include "post_card.html" %}
         {% empty %}
             <p>This community has no posts.</p>
         {% endfor %}

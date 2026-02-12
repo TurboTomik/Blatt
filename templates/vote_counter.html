@@ -1,14 +1,21 @@
-{% load components %}
-<div class="flex items-center gap-1 bg-surface-3 rounded-full">
-    <button type="button" class="rounded-full p-0.5 hover:bg-green-600/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-            <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 14 6-6 6 6" />
-        </svg>
-    </button>
-    <span>{{ post.votes }}</span>
-    <button type="button" class="rounded-full p-0.5 hover:bg-red-600/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="none">
-            <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 8 6 6 6-6" />
-        </svg>
-    </button>
+<div class="flex items-center gap-1 bg-base-200 rounded-full">
+	<button type="button" class="rounded-full p-0.5 hover:bg-green-600/20">
+		<svg xmlns="http://www.w3.org/2000/svg"
+		     width="24"
+		     height="24"
+		     viewBox="0 0 24 24"
+		>
+			<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 14 6-6 6 6"/>
+		</svg>
+	</button>
+	<span>{{ post.votes }}</span>
+	<button type="button" class="rounded-full p-0.5 hover:bg-red-600/20">
+		<svg xmlns="http://www.w3.org/2000/svg"
+		     width="24"
+		     height="24"
+		     viewBox="0 0 24 24"
+		>
+			<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 10 6 6 6-6"/>
+		</svg>
+	</button>
 </div>

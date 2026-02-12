@@ -1,7 +1,6 @@
-{% load components %}
 {% if post.community not in subscriptions %}
     <form action="{% url 'community-join' post.community.name %}" method="post">
         {% csrf_token %}
-        {% button label="Join" button_type="submit" small=True %}
+        <button class="btn btn-primary btn-xs rounded-full" type="submit">Join</button>
     </form>
 {% endif %}
