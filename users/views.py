@@ -1,11 +1,13 @@
 from typing import Any
 
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView
 
-from communities.models import Community, Subscription
+from communities.models import Community
+from posts.mixins import PaginatedViewMixin
 from posts.models import Post
 
 from .forms import UserLoginForm, UserRegisterForm
@@ -143,7 +145,7 @@ class UserLoginView(View):
         return render(request, self.template_name, {"form": form})
 
 
-class UserPageView(DetailView):
+class UserPageView(PaginatedViewMixin, DetailView):
     """
     Display detailed information for a single user.
 
@@ -166,10 +168,9 @@ class UserPageView(DetailView):
     slug_field = "username"
     slug_url_kwarg = "username"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """Add user subscriptions to context if authenticated."""
         context = super().get_context_data(**kwargs)
-        user = self.object
-        context["posts"] = Post.objects.filter(user=user)
         if self.request.user.is_authenticated:
             context["subscriptions"] = Community.objects.filter(
                 subscriptions__user=self.request.user
@@ -178,3 +179,11 @@ class UserPageView(DetailView):
             context["subscriptions"] = []
 
         return context
+
+    def get_paginated_queryset(self) -> QuerySet["Post"]:
+        """Return posts created by the current user ordered by newest first."""
+        return (
+            Post.objects.filter(user=self.object)
+            .select_related("community", "user")
+            .order_by("-created_at")
+        )
