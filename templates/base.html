@@ -1,4 +1,5 @@
 {% load static %}
+{% load django_htmx %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,11 +12,12 @@
               content="width=device-width, initial-scale=1.0 viewport-fit=cover">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="UTF-8">
+        {% htmx_script %}
         <title>
             {% block  title %}{% endblock %}
         </title>
     </head>
-    <body>
+    <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
         {% if not no_header %}
             {% if not header_alt %}
                 {% include "header.html" %}
