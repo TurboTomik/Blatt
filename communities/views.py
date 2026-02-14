@@ -1,12 +1,14 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, DetailView
 from django.views.generic.base import View
 
+from posts.mixins import PaginatedViewMixin
 from posts.models import Post
 
 from .models import Community, Subscription
@@ -24,7 +26,7 @@ class CreateCommunityView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class CommunityDetailView(DetailView):
+class CommunityDetailView(PaginatedViewMixin, DetailView):
     """Display detailed information for a specific community."""
 
     model = Community
@@ -48,11 +50,17 @@ class CommunityDetailView(DetailView):
             user
         )
 
-        context["posts"] = Post.objects.filter(community=community)
-
         context["is_community"] = True
 
         return context
+
+    def get_paginated_queryset(self) -> QuerySet["Post"]:
+        """Return posts for the current community ordered by newest first."""
+        return (
+            Post.objects.filter(community=self.object)
+            .select_related("community", "user")
+            .order_by("-created_at")
+        )
 
 
 class CommunityJoinView(LoginRequiredMixin, View):
