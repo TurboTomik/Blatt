@@ -1,5 +1,7 @@
 from typing import Any
 
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Prefetch, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -198,3 +200,33 @@ class UserPageView(PaginatedViewMixin, DetailView):
             )
 
         return queryset
+
+
+class EditProfileView(LoginRequiredMixin, View):
+    """Class-based view to allow a user to update their profile."""
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Render the profile edit form."""
+        profile = request.user.profile
+        return render(request, "edit_profile.html", {"profile": profile})
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Handle the form submission to update the profile."""
+        profile = request.user.profile
+
+        display_name = request.POST.get("display_name", "").strip()
+        bio = request.POST.get("bio", "").strip()
+        avatar = request.FILES.get("avatar")
+
+        profile.display_name = display_name
+        profile.bio = bio
+
+        if avatar:
+            if avatar.size > 2 * 1024 * 1024:
+                messages.error(request, "Avatar must be smaller than 2MB.")
+                return redirect(request.META.get("HTTP_REFERER", "/"))
+            profile.avatar = avatar
+
+        profile.save()
+        messages.success(request, "Profile updated successfully!")
+        return redirect(request.META.get("HTTP_REFERER", "/"))

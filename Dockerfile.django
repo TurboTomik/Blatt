@@ -1,15 +1,10 @@
 FROM python:3.11-slim-trixie
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# System deps (psycopg, node for tailwind via django-tailwind)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Setup a non-root user
-RUN groupadd --system --gid 999 nonroot && \
-    useradd --system --gid 999 --uid 999 --create-home nonroot 
 
 WORKDIR /app
 
@@ -29,8 +24,6 @@ COPY . /app
 # Install project + dev deps
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
-
-RUN chown -R nonroot:nonroot /app
 
 USER nonroot
 ENTRYPOINT []

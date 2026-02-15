@@ -23,7 +23,40 @@
                 </svg>
             </button>
             {% if user == profile_user %}
-                <button class="btn btn-outline btn-primary rounded-full" type="button">Edit</button>
+                <button class="btn btn-outline btn-primary rounded-full"
+                        type="button"
+                        onclick="edit_profile.showModal()">Edit</button>
+                <dialog id="edit_profile" class="modal">
+                    <div class="modal-box">
+                        <form method="POST"
+                              action="{% url 'edit_profile' %}"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <button type="button"
+                                    class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                                    onclick="document.getElementById('edit_profile').close()">✕</button>
+                            <h3 class="text-lg font-bold">Edit</h3>
+                            <fieldset class="fieldset">
+                                <legend class="fieldset-legend">Preferred display name</legend>
+                                <input type="text"
+                                       name="display_name"
+                                       class="input"
+                                       value="{{ request.user.profile.display_name }}" />
+                                <label class="label">Optional</label>
+                                <legend class="fieldset-legend">Bio</legend>
+                                <input type="text"
+                                       name="bio"
+                                       class="input"
+                                       value="{{ request.user.profile.bio }}" />
+                                <label class="label">Optional</label>
+                                <legend class="fieldset-legend">Pick an avatar</legend>
+                                <input type="file" name="avatar" class="file-input" accept="image/*" />
+                                <label class="label">Max size 2MB</label>
+                            </fieldset>
+                            <button class="btn btn-outline btn-primary rounded-full" type="submit">Save</button>
+                        </form>
+                    </div>
+                </dialog>
             {% endif %}
         </div>
     </section>
