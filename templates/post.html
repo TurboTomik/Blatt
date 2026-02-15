@@ -41,6 +41,8 @@
         <p class="text-lg wrap-break-word">{{ post.body|linebreaksbr }}</p>
     </div>
     <footer class="flex gap-1 items-center pt-1">
-        {% include "vote_counter.html" %}
+        {% with user_vote=user_vote %}
+            {% include "partials/vote_component.html" %}
+        {% endwith %}
     </footer>
 </main>

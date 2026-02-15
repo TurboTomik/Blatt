@@ -5,7 +5,9 @@
     <div class="flex flex-col items-center gap-3 px-2 mb-3"
          id="posts-container">
         {% for post in page_obj %}
-            {% include "posts/post_card.html" %}
+            {% with user_vote=post.current_user_vote.0 %}
+                {% include "posts/post_card.html" %}
+            {% endwith %}
         {% empty %}
             <p>This community has no posts.</p>
         {% endfor %}

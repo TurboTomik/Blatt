@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import QuerySet
+from django.db.models import Prefetch, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 
 from communities.models import Community
 from posts.mixins import PaginatedViewMixin
-from posts.models import Post
+from posts.models import Post, PostVote
 
 from .forms import UserLoginForm, UserRegisterForm
 from .models import User
@@ -181,9 +181,20 @@ class UserPageView(PaginatedViewMixin, DetailView):
         return context
 
     def get_paginated_queryset(self) -> QuerySet["Post"]:
-        """Return posts created by the current user ordered by newest first."""
-        return (
+        """Return posts created by the profile user."""
+        queryset = (
             Post.objects.filter(user=self.object)
             .select_related("community", "user")
             .order_by("-created_at")
         )
+
+        if self.request.user.is_authenticated:
+            queryset = queryset.prefetch_related(
+                Prefetch(
+                    "post_votes",
+                    queryset=PostVote.objects.filter(user=self.request.user),
+                    to_attr="current_user_vote",
+                )
+            )
+
+        return queryset

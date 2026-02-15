@@ -50,3 +50,68 @@ class Post(models.Model):
     def votes(self) -> int:
         """Return the net vote score (upvotes minus downvotes)."""
         return self.up_votes - self.down_votes
+
+
+class PostVote(models.Model):
+    """
+    Represent a single user's vote on a Post.
+
+    Each user may vote only once per post.
+    A vote can either be an upvote (+1) or a downvote (-1).
+
+    This model enables:
+    - Preventing duplicate votes
+    - Allowing vote toggling
+    - Allowing vote switching
+    - Tracking which users voted
+    """
+
+    UP = 1
+    DOWN = -1
+
+    VOTE_CHOICES = (
+        (UP, "Upvote"),
+        (DOWN, "Downvote"),
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="post_votes",
+        related_query_name="post_vote",
+        help_text="The user who cast the vote.",
+    )
+
+    post = models.ForeignKey(
+        "Post",
+        on_delete=models.CASCADE,
+        related_name="post_votes",
+        related_query_name="post_vote",
+        help_text="The post being voted on.",
+    )
+
+    value = models.SmallIntegerField(
+        choices=VOTE_CHOICES,
+        help_text="The vote value: +1 for upvote, -1 for downvote.",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="Timestamp when the vote was created.",
+    )
+
+    class Meta:
+        """Enforce one vote per user per post."""
+
+        db_table = "post_vote"
+        unique_together = ("user", "post")
+        indexes = [
+            models.Index(fields=["post"]),
+            models.Index(fields=["user"]),
+        ]
+        verbose_name = "Post Vote"
+        verbose_name_plural = "Post Votes"
+
+    def __str__(self) -> str:
+        """Return a readable string representation of the vote."""
+        return f"PostVote(user={self.user_id}, post={self.post_id}, value={self.value})"

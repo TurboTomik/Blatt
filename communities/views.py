@@ -1,7 +1,7 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import Prefetch, QuerySet
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
@@ -9,7 +9,7 @@ from django.views.generic import CreateView, DetailView
 from django.views.generic.base import View
 
 from posts.mixins import PaginatedViewMixin
-from posts.models import Post
+from posts.models import Post, PostVote
 
 from .models import Community, Subscription
 
@@ -56,11 +56,22 @@ class CommunityDetailView(PaginatedViewMixin, DetailView):
 
     def get_paginated_queryset(self) -> QuerySet["Post"]:
         """Return posts for the current community ordered by newest first."""
-        return (
+        queryset = (
             Post.objects.filter(community=self.object)
             .select_related("community", "user")
             .order_by("-created_at")
         )
+
+        if self.request.user.is_authenticated:
+            queryset = queryset.prefetch_related(
+                Prefetch(
+                    "post_votes",
+                    queryset=PostVote.objects.filter(user=self.request.user),
+                    to_attr="current_user_vote",
+                )
+            )
+
+        return queryset
 
 
 class CommunityJoinView(LoginRequiredMixin, View):

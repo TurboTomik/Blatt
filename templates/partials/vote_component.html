@@ -1,0 +1,30 @@
+<div id="post-{{ post.id }}-votes"
+     class="flex items-center gap-1 bg-base-200 rounded-full">
+    <button type="button"
+            hx-post="{% url 'post-vote' post.id %}"
+            hx-vals='{"value": 1}'
+            hx-target="#post-{{ post.id }}-votes"
+            hx-swap="outerHTML"
+            class="{% if user_vote and user_vote.value == 1 %}text-green-600{% endif %} rounded-full p-0.5 hover:bg-green-600/20">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="24"
+             height="24"
+             viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 14 6-6 6 6" />
+        </svg>
+    </button>
+    <span>{{ post.votes }}</span>
+    <button type="button"
+            hx-post="{% url 'post-vote' post.id %}"
+            hx-vals='{"value": -1}'
+            hx-target="#post-{{ post.id }}-votes"
+            hx-swap="outerHTML"
+            class="{% if user_vote and user_vote.value == -1 %}text-red-600{% endif %} rounded-full p-0.5 hover:bg-red-600/20">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="24"
+             height="24"
+             viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 10 6 6 6-6" />
+        </svg>
+    </button>
+</div>
